@@ -3,16 +3,24 @@ A simple debug overlay singleton based on Gonkee's tutorial: https://youtu.be/8U
 
 ![preview](preview.png "Preview")
 
-Pretty simple to use. Add the `DebugOverlay.gd` and `DebugOverlay.tscn` files to your `addons/debug-overlay` folder. Add the `DebugOverlay.tscn` scene as a singleton to your project. Add stats to watch like the following:
+## Installation
+
+Add the `DebugOverlay.gd` and `DebugOverlay.tscn` files to your `addons/debug-overlay` folder. Alternatively, you can download it from the Asset Library and install it from there. (Note: TODO)
+
+## Use
+
+The `DebugOverlay.tscn` scene can either be added to your game as an AutoLoad or added as a child to a camera. An example of adding monitors to an AutoLoad singleton can be done like so:
 
 ```python3
-    DebugOverlay.visible = true
-    # Add a property stat
-    DebugOverlay.add_stat("Cursor", self, "Sprite:position")
-    # Add a function (from "self") stat
-    DebugOverlay.add_stat("Sprites", self, "", "get_sprite_count")
-    # Add a function (from "self") stat with arguments
-    DebugOverlay.add_stat("Text", self, "", "get_debug_text", ["This is a test!"])
+DebugOverlay.visible = true
+# Add a property monitor
+DebugOverlay.add_monitor("Cursor X", self, "Sprite:global_position:x")
+# Add a function (from "self") monitor
+DebugOverlay.add_monitor("Sprites", self, "", "get_sprite_count")
+# Add a function (from "self") monitor with arguments
+DebugOverlay.add_monitor("Text", self, "", "get_debug_text", ["This is a test!"])
 ```
 
-Demo can be found in `addons/debug-overlay/Demo.tscn` scene.
+Additional demos are available in the `addons/debug-overlay/demo` folder.
+
+Icon: (CC0 1.0 Universal) [Kenney](https://twitter.com/KenneyNL/)

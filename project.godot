@@ -16,7 +16,6 @@ _global_script_class_icons={
 [application]
 
 config/name="godot-debug-overlay"
-run/main_scene="res://addons/debug-overlay/Demo.tscn"
 config/icon="res://icon.png"
 
 [autoload]
