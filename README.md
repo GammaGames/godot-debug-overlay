@@ -5,7 +5,7 @@ A simple debug overlay singleton based on Gonkee's tutorial: https://youtu.be/8U
 
 ## Installation
 
-Add the `DebugOverlay.gd` and `DebugOverlay.tscn` files to your `addons/debug-overlay` folder. Alternatively, you can download it from the Asset Library and install it from there. (Note: TODO)
+Add the `DebugOverlay.gd` and `DebugOverlay.tscn` files to your `addons/debug-overlay` folder. Alternatively, you can download it from the Asset Library: https://godotengine.org/asset-library/asset/645
 
 ## Use
 
