@@ -1,73 +1,80 @@
-class_name DebugOverlay
 extends CanvasLayer
 # A simple debug overlay to monitor variables
 
-var _monitors = {}
-var _monitors_sequence: int = 0 setget , get_sequence
-var visible: bool = false setget set_visible, get_visible
+var visible := false setget set_visible, get_visible
+var _overlay_text := Label.new()
+var _monitors := {}
+var _monitors_sequence := 0 setget , get_sequence
 
 
-func set_visible(value):
-    visible = value
-    if not visible:
-        $Label.text = ""
+func _enter_tree() -> void:
+	add_child(_overlay_text)
 
 
-func get_visible():
-    return visible
+func _exit_tree() -> void:
+	_overlay_text.queue_free()
 
 
-func add_monitor(label: String, caller: Node, target: NodePath, call_method: String = "", args: Array = []) -> int:
-    _monitors_sequence += 1
+func _process(_delta: float) -> void:
+	if visible:
+		var label_text := ""
 
-    if target.is_empty():
-        _monitors[_monitors_sequence] = [label, caller, "", call_method, args]
-    else:
-        var target_node = caller.get_node(target)
-        var property_path = ":" + target.get_concatenated_subnames()
-        _monitors[_monitors_sequence] = [label, target_node, property_path, call_method, args]
+		label_text += _format_label("FPS", Engine.get_frames_per_second())
+		label_text += _format_label("Static Memory", String.humanize_size( OS.get_static_memory_usage()))
 
-    return _monitors_sequence
+		for id in _monitors:
+			label_text += _process_monitor(_monitors[id])
+
+		_overlay_text.text = label_text
+
+
+func set_visible(value: bool) -> void:
+	visible = value
+	if not visible:
+		_overlay_text.text = ""
+
+
+func get_visible() -> bool:
+	return visible
+
+
+func add_monitor(label: String, caller: Node, target: NodePath,
+		 call_method := "", args := []) -> int:
+	_monitors_sequence += 1
+
+	if target.is_empty():
+		_monitors[_monitors_sequence] = [label, caller, "", call_method, args]
+	else:
+		var target_node := caller.get_node(target)
+		var property_path := ":" + target.get_concatenated_subnames()
+		_monitors[_monitors_sequence] = [
+			label, target_node, property_path, call_method, args,
+		]
+
+	return _monitors_sequence
 
 
 func remove_monitor(id: int) -> bool:
-    var result = _monitors.has(id)
-    if result:
-        _monitors.erase(id)
-
-    return result
+	return _monitors.erase(id)
 
 
-func get_sequence():
-    return _monitors_sequence
+func get_sequence() -> int:
+	return _monitors_sequence
 
 
-func format_label(label, value):
-    return "{0}: {1}\n".format([label, value])
+func _format_label(label, value) -> String:
+	return "{0}: {1}\n".format([label, value])
 
 
-func process_monitor(monitor) -> String:
-    var label = monitor[0]
-    var node = monitor[1]
+func _process_monitor(monitor: Array) -> String:
+	var label: String = monitor[0]
+	var node: Node = monitor[1]
 
-    if node and weakref(node).get_ref():
-        if monitor[2] != "":
-            var property = node.get_indexed(monitor[2])
-            if monitor[3] == "":
-                return format_label(label, property)
-        return format_label(label, node.callv(monitor[3], monitor[4]))
+	if node and weakref(node).get_ref():
+		if monitor[2] != "":
+			var property = node.get_indexed(monitor[2])
+			if monitor[3] == "":
+				return _format_label(label, property)
+		return _format_label(label, node.callv(monitor[3], monitor[4]))
 
-    return ""
-
-
-func _process(delta):
-    if visible:
-        var label_text = ""
-
-        label_text += format_label("FPS", Engine.get_frames_per_second())
-        label_text += format_label("Static Memory", String.humanize_size( OS.get_static_memory_usage()))
-
-        for id in _monitors:
-            label_text += process_monitor(_monitors[id])
-
-        $Label.text = label_text
+	return ""
