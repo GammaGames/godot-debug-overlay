@@ -1,18 +1,24 @@
 extends CanvasLayer
 # A simple debug overlay to monitor variables
 
+export var scene: PackedScene = \
+		preload("res://addons/debug-overlay/DebugOverlayTemplate.tscn")
 var visible := false setget set_visible, get_visible
-var _overlay_text := Label.new()
+var _overlay_text: Label
 var _monitors := {}
 var _monitors_sequence := 0 setget , get_sequence
 
 
 func _enter_tree() -> void:
-	add_child(_overlay_text)
+	var debug_overlay_template := scene.instance()
+	for child_node in debug_overlay_template.get_children():
+		add_child((child_node as Node).duplicate())
+	return
 
 
-func _exit_tree() -> void:
-	_overlay_text.queue_free()
+func _ready() -> void:
+	_overlay_text = get_node("Label")
+	return
 
 
 func _process(_delta: float) -> void:

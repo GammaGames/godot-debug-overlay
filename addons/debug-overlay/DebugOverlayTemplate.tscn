@@ -1,0 +1,30 @@
+[gd_scene format=2]
+
+[node name="DebugOverlayTemplate" type="CanvasLayer"]
+
+[node name="Label" type="Label" parent="."]
+margin_left = 16.0
+margin_top = 16.0
+margin_right = 116.0
+margin_bottom = 47.0
+rect_min_size = Vector2( 100, 50 )
+text = "key1: value1
+key2: value2value2value2value2
+key1: value1"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="Label"]
+show_behind_parent = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -15.0
+margin_top = -15.0
+margin_right = 15.0
+size_flags_stretch_ratio = 2.0
+color = Color( 0.22, 0.22, 0.22, 0.588235 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
