@@ -13,6 +13,7 @@ func _enter_tree() -> void:
 	var debug_overlay_template := scene.instance()
 	for child_node in debug_overlay_template.get_children():
 		add_child((child_node as Node).duplicate())
+	debug_overlay_template.queue_free()
 	return
 
 
