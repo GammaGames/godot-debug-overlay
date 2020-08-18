@@ -20,7 +20,7 @@ config/icon="res://icon.png"
 
 [autoload]
 
-DebugOverlay="*res://addons/debug-overlay/DebugOverlay.tscn"
+DebugOverlay="*res://addons/debug-overlay/debug_overlay.tscn"
 
 [rendering]
 
